@@ -26,26 +26,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. **/
 
-import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'main_game_page.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Flame.device.fullScreen();
+class MapLoader {
+  static Future<List<Rect>> readRayWorldCollisionMap() async {
+    final collidableRects = <Rect>[];
+    final dynamic collisionMap = json.decode(
+        await rootBundle.loadString('assets/rayworld_collision_map.json'));
 
-  runApp(const App());
-}
+    for (final dynamic data in collisionMap['objects']) {
+      collidableRects.add(Rect.fromLTWH(
+          data['x'] as double,
+          data['y'] as double,
+          data['width'] as double,
+          data['height'] as double));
+    }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'RayWorld',
-      home: MainGamePage(),
-    );
+    return collidableRects;
   }
 }

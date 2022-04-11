@@ -26,26 +26,37 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE. **/
 
-import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'main_game_page.dart';
+import 'helpers/direction.dart';
+import 'helpers/joypad.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Flame.device.fullScreen();
-
-  runApp(const App());
-}
-
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+class MainGamePage extends StatefulWidget {
+  const MainGamePage({Key? key}) : super(key: key);
 
   @override
+  MainGameState createState() => MainGameState();
+}
+
+class MainGameState extends State<MainGamePage> {
+  @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'RayWorld',
-      home: MainGamePage(),
-    );
+    return Scaffold(
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
+        body: Stack(
+          children: [
+            // TODO 1
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Joypad(onDirectionChanged: onJoypadDirectionChanged),
+              ),
+            )
+          ],
+        ));
+  }
+
+  void onJoypadDirectionChanged(Direction direction) {
+    // TODO 2
   }
 }
